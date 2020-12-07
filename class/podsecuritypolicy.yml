@@ -9,4 +9,3 @@ parameters:
           - podsecuritypolicy/component/main.jsonnet
         input_type: jsonnet
         output_path: podsecuritypolicy/
-
