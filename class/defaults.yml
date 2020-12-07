@@ -1,0 +1,3 @@
+parameters:
+  podsecuritypolicy:
+    namespace: syn-podsecuritypolicy
