@@ -10,10 +10,170 @@ default:: `syn-podsecuritypolicy`
 
 The namespace in which to deploy this component.
 
+== `policies`
+
+[horizontal]
+type:: dictionary
+default::
+[source,yaml]
+----
+syn-privileged: # https://raw.githubusercontent.com/kubernetes/website/master/content/en/examples/policy/privileged-psp.yaml
+  annotations:
+    seccomp.security.alpha.kubernetes.io/allowedProfileNames: '*'
+  spec:
+    privileged: true
+    allowPrivilegeEscalation: true
+    allowedCapabilities:
+      - '*'
+    volumes:
+      - '*'
+    hostNetwork: true
+    hostPorts:
+      - min: 0
+        max: 65535
+    hostIPC: true
+    hostPID: true
+    runAsUser:
+      rule: 'RunAsAny'
+    seLinux:
+      rule: 'RunAsAny'
+    supplementalGroups:
+      rule: 'RunAsAny'
+    fsGroup:
+      rule: 'RunAsAny'
+syn-restricted: # https://raw.githubusercontent.com/kubernetes/website/master/content/en/examples/policy/restricted-psp.yaml
+  annotations:
+    seccomp.security.alpha.kubernetes.io/allowedProfileNames: 'docker/default,runtime/default'
+    apparmor.security.beta.kubernetes.io/allowedProfileNames: 'runtime/default'
+    seccomp.security.alpha.kubernetes.io/defaultProfileName: 'runtime/default'
+    apparmor.security.beta.kubernetes.io/defaultProfileName: 'runtime/default'
+  bindToGroups:
+    - system:authenticated
+  spec:
+    privileged: false
+    allowPrivilegeEscalation: false
+    requiredDropCapabilities:
+      - ALL
+    volumes:
+      - 'configMap'
+      - 'emptyDir'
+      - 'projected'
+      - 'secret'
+      - 'downwardAPI'
+      - 'persistentVolumeClaim'
+    hostNetwork: false
+    hostIPC: false
+    hostPID: false
+    runAsUser:
+      rule: 'MustRunAsNonRoot'
+    seLinux:
+      rule: 'RunAsAny'
+    supplementalGroups:
+      rule: 'MustRunAs'
+      ranges:
+        - min: 1
+          max: 65535
+    fsGroup:
+      rule: 'MustRunAs'
+      ranges:
+        - min: 1
+          max: 65535
+    readOnlyRootFilesystem: false
+----
+
+Dictionary that contains all the defined policies with their `spec` and optionally `annotations` and `bindToGroups`.
+
+
+== `policies.<name>.spec`
+
+[horizontal]
+type:: yaml
+default:: none
+
+The whole specification of the policy.
+
+== `policies.<name>.bindToGroups`
+
+[horizontal]
+type:: array
+default:: none
+
+Optionally bind groups that are allowed to use the policy.
+
+== `policies.<name>.annotations`
+
+[horizontal]
+type:: yaml
+default:: none
+
+Optionally add annotations to a policy.
 
 == Example
 
 [source,yaml]
 ----
 namespace: example-namespace
+policies:
+  syn-privileged: # https://raw.githubusercontent.com/kubernetes/website/master/content/en/examples/policy/privileged-psp.yaml
+    annotations:
+      seccomp.security.alpha.kubernetes.io/allowedProfileNames: '*'
+    spec:
+      privileged: true
+      allowPrivilegeEscalation: true
+      allowedCapabilities:
+        - '*'
+      volumes:
+        - '*'
+      hostNetwork: true
+      hostPorts:
+        - min: 0
+          max: 65535
+      hostIPC: true
+      hostPID: true
+      runAsUser:
+        rule: 'RunAsAny'
+      seLinux:
+        rule: 'RunAsAny'
+      supplementalGroups:
+        rule: 'RunAsAny'
+      fsGroup:
+        rule: 'RunAsAny'
+  syn-restricted: # https://raw.githubusercontent.com/kubernetes/website/master/content/en/examples/policy/restricted-psp.yaml
+    annotations:
+      seccomp.security.alpha.kubernetes.io/allowedProfileNames: 'docker/default,runtime/default'
+      apparmor.security.beta.kubernetes.io/allowedProfileNames: 'runtime/default'
+      seccomp.security.alpha.kubernetes.io/defaultProfileName: 'runtime/default'
+      apparmor.security.beta.kubernetes.io/defaultProfileName: 'runtime/default'
+    bindToGroups:
+      - system:authenticated
+    spec:
+      privileged: false
+      allowPrivilegeEscalation: false
+      requiredDropCapabilities:
+        - ALL
+      volumes:
+        - 'configMap'
+        - 'emptyDir'
+        - 'projected'
+        - 'secret'
+        - 'downwardAPI'
+        - 'persistentVolumeClaim'
+      hostNetwork: false
+      hostIPC: false
+      hostPID: false
+      runAsUser:
+        rule: 'MustRunAsNonRoot'
+      seLinux:
+        rule: 'RunAsAny'
+      supplementalGroups:
+        rule: 'MustRunAs'
+        ranges:
+          - min: 1
+            max: 65535
+      fsGroup:
+        rule: 'MustRunAs'
+        ranges:
+          - min: 1
+            max: 65535
+      readOnlyRootFilesystem: false
 ----

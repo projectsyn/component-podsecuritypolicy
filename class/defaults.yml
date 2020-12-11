@@ -1,3 +1,66 @@
 parameters:
   podsecuritypolicy:
     namespace: syn-podsecuritypolicy
+    policies:
+      syn-privileged: # https://raw.githubusercontent.com/kubernetes/website/master/content/en/examples/policy/privileged-psp.yaml
+        annotations:
+          seccomp.security.alpha.kubernetes.io/allowedProfileNames: '*'
+        spec:
+          privileged: true
+          allowPrivilegeEscalation: true
+          allowedCapabilities:
+            - '*'
+          volumes:
+            - '*'
+          hostNetwork: true
+          hostPorts:
+            - min: 0
+              max: 65535
+          hostIPC: true
+          hostPID: true
+          runAsUser:
+            rule: 'RunAsAny'
+          seLinux:
+            rule: 'RunAsAny'
+          supplementalGroups:
+            rule: 'RunAsAny'
+          fsGroup:
+            rule: 'RunAsAny'
+      syn-restricted: # https://raw.githubusercontent.com/kubernetes/website/master/content/en/examples/policy/restricted-psp.yaml
+        annotations:
+          seccomp.security.alpha.kubernetes.io/allowedProfileNames: 'docker/default,runtime/default'
+          apparmor.security.beta.kubernetes.io/allowedProfileNames: 'runtime/default'
+          seccomp.security.alpha.kubernetes.io/defaultProfileName: 'runtime/default'
+          apparmor.security.beta.kubernetes.io/defaultProfileName: 'runtime/default'
+        bindToGroups:
+          - system:authenticated
+        spec:
+          privileged: false
+          allowPrivilegeEscalation: false
+          requiredDropCapabilities:
+            - ALL
+          volumes:
+            - 'configMap'
+            - 'emptyDir'
+            - 'projected'
+            - 'secret'
+            - 'downwardAPI'
+            - 'persistentVolumeClaim'
+          hostNetwork: false
+          hostIPC: false
+          hostPID: false
+          runAsUser:
+            rule: 'MustRunAsNonRoot'
+          seLinux:
+            rule: 'RunAsAny'
+          supplementalGroups:
+            rule: 'MustRunAs'
+            ranges:
+              - min: 1
+                max: 65535
+          fsGroup:
+            rule: 'MustRunAs'
+            ranges:
+              - min: 1
+                max: 65535
+          readOnlyRootFilesystem: false
