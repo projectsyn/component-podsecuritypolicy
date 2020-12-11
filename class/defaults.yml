@@ -1,6 +1,5 @@
 parameters:
   podsecuritypolicy:
-    namespace: syn-podsecuritypolicy
     policies:
       syn-privileged: # https://raw.githubusercontent.com/kubernetes/website/master/content/en/examples/policy/privileged-psp.yaml
         annotations:

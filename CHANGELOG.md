@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial implementation ([#1])
 
-[Unreleased]: https://github.com/projectsyn/component-podsecuritypolicy/compare/v0.1.0...HEAD
+### Changed
+
+- Remove namespace ([#2])
+
+[Unreleased]: https://github.com/projectsyn/component-podsecuritypolicy/compare/v5ba2fb4a241a8d4e21eee521aeb960d3d8d8ecf3...HEAD
 
 [#1]: https://github.com/projectsyn/component-podsecuritypolicy/pull/1
+[#2]: https://github.com/projectsyn/component-podsecuritypolicy/pull/2
