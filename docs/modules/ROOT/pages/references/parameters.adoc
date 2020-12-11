@@ -2,14 +2,6 @@
 
 The parent key for all of the following parameters is `podsecuritypolicy`.
 
-== `namespace`
-
-[horizontal]
-type:: string
-default:: `syn-podsecuritypolicy`
-
-The namespace in which to deploy this component.
-
 == `policies`
 
 [horizontal]
@@ -112,7 +104,6 @@ Optionally add annotations to a policy.
 
 [source,yaml]
 ----
-namespace: example-namespace
 policies:
   syn-privileged: # https://raw.githubusercontent.com/kubernetes/website/master/content/en/examples/policy/privileged-psp.yaml
     annotations:
