@@ -1,0 +1,6 @@
+:global:
+  componentName: podsecuritypolicy
+
+docs/antora.yml:
+  name: podsecuritypolicy
+  title: podsecuritypolicy
