@@ -8,6 +8,10 @@ local app = argocd.App('podsecuritypolicy', '') {
   },
 };
 
+local appPath =
+  local project = std.get(std.get(app, 'spec', {}), 'project', 'syn');
+  if project == 'syn' then 'apps' else 'apps-%s' % project;
+
 {
-  podsecuritypolicy: app,
+  ['%s/podsecuritypolicy' % appPath]: app,
 }

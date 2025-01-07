@@ -1,5 +1,7 @@
 parameters:
   podsecuritypolicy:
+    =_metadata:
+      multi_tenant: true
     policies:
       syn-privileged: # https://raw.githubusercontent.com/kubernetes/website/master/content/en/examples/policy/privileged-psp.yaml
         annotations:
